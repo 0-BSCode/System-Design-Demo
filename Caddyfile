@@ -9,7 +9,12 @@
 		reverse_proxy localhost:5175
 	}
 
+	redir /proxy-patterns /proxy-patterns/ permanent
+	handle /proxy-patterns/* {
+		reverse_proxy localhost:5176
+	}
+
 	handle / {
-		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/" 200
+		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/ or /proxy-patterns/" 200
 	}
 }

@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Turborepo
+.turbo/
+
+# Svelte
+.svelte-kit
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

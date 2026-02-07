@@ -1,5 +1,5 @@
 <script>
-  let { limiter } = $props();
+let { limiter } = $props();
 </script>
 
 <div class="viz leaky-bucket-viz">

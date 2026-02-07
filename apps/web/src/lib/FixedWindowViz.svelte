@@ -1,17 +1,21 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+import { onDestroy, onMount } from "svelte";
 
-  let { limiter } = $props();
-  let progress = $state(0);
-  let frameId;
+let { limiter } = $props();
+let progress = $state(0);
+let frameId;
 
-  function tick() {
-    progress = limiter.getWindowProgress();
-    frameId = requestAnimationFrame(tick);
-  }
+function tick() {
+  progress = limiter.getWindowProgress();
+  frameId = requestAnimationFrame(tick);
+}
 
-  onMount(() => { frameId = requestAnimationFrame(tick); });
-  onDestroy(() => { if (frameId) cancelAnimationFrame(frameId); });
+onMount(() => {
+  frameId = requestAnimationFrame(tick);
+});
+onDestroy(() => {
+  if (frameId) cancelAnimationFrame(frameId);
+});
 </script>
 
 <div class="viz fixed-window-viz">

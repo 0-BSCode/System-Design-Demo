@@ -1,11 +1,11 @@
 <script>
-  let { log = [] } = $props();
+let { log = [] } = $props();
 
-  function timeAgo(ts) {
-    const diff = Date.now() - ts;
-    if (diff < 1000) return 'just now';
-    return `${(diff / 1000).toFixed(1)}s ago`;
-  }
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 1000) return "just now";
+  return `${(diff / 1000).toFixed(1)}s ago`;
+}
 </script>
 
 <div class="log-panel">

@@ -1,100 +1,106 @@
 <script>
-  import { onDestroy } from 'svelte';
-  import {
-    createTokenBucket,
-    createFixedWindow,
-    createSlidingWindowLog,
-    createLeakyBucket,
-  } from './lib/rateLimiters.svelte.js';
+import { onDestroy } from "svelte";
+import FixedWindowViz from "./lib/FixedWindowViz.svelte";
+import LeakyBucketViz from "./lib/LeakyBucketViz.svelte";
+import RequestLog from "./lib/RequestLog.svelte";
+import {
+  createFixedWindow,
+  createLeakyBucket,
+  createSlidingWindowLog,
+  createTokenBucket,
+} from "./lib/rateLimiters.svelte.js";
+import SlidingWindowViz from "./lib/SlidingWindowViz.svelte";
+import TokenBucketViz from "./lib/TokenBucketViz.svelte";
 
-  import TokenBucketViz from './lib/TokenBucketViz.svelte';
-  import FixedWindowViz from './lib/FixedWindowViz.svelte';
-  import SlidingWindowViz from './lib/SlidingWindowViz.svelte';
-  import LeakyBucketViz from './lib/LeakyBucketViz.svelte';
-  import RequestLog from './lib/RequestLog.svelte';
+const algorithms = [
+  { id: "token-bucket", label: "Token Bucket", color: "#3b82f6" },
+  { id: "fixed-window", label: "Fixed Window", color: "#8b5cf6" },
+  { id: "sliding-window", label: "Sliding Window", color: "#10b981" },
+  { id: "leaky-bucket", label: "Leaky Bucket", color: "#f59e0b" },
+];
 
-  const algorithms = [
-    { id: 'token-bucket', label: 'Token Bucket', color: '#3b82f6' },
-    { id: 'fixed-window', label: 'Fixed Window', color: '#8b5cf6' },
-    { id: 'sliding-window', label: 'Sliding Window', color: '#10b981' },
-    { id: 'leaky-bucket', label: 'Leaky Bucket', color: '#f59e0b' },
-  ];
+let selected = $state("token-bucket");
+let flash = $state(null);
+let autoSend = $state(false);
+let autoIntervalId = null;
+let autoRate = $state(5);
 
-  let selected = $state('token-bucket');
-  let flash = $state(null);
-  let autoSend = $state(false);
-  let autoIntervalId = null;
-  let autoRate = $state(5);
+let tokenBucket = createTokenBucket(10, 2);
+let fixedWindow = createFixedWindow(5, 5000);
+let slidingWindow = createSlidingWindowLog(5, 5000);
+let leakyBucket = createLeakyBucket(10, 2);
 
-  let tokenBucket = createTokenBucket(10, 2);
-  let fixedWindow = createFixedWindow(5, 5000);
-  let slidingWindow = createSlidingWindowLog(5, 5000);
-  let leakyBucket = createLeakyBucket(10, 2);
-
-  let limiter = $derived.by(() => {
-    switch (selected) {
-      case 'token-bucket': return tokenBucket;
-      case 'fixed-window': return fixedWindow;
-      case 'sliding-window': return slidingWindow;
-      case 'leaky-bucket': return leakyBucket;
-      default: return tokenBucket;
-    }
-  });
-
-  let stats = $derived.by(() => {
-    const log = limiter.log;
-    const total = log.length;
-    const accepted = log.filter(e => e.accepted).length;
-    const rejected = total - accepted;
-    const rate = total > 0 ? ((accepted / total) * 100).toFixed(1) : '0.0';
-    return { total, accepted, rejected, rate };
-  });
-
-  function sendRequest() {
-    const result = limiter.tryRequest();
-    flash = result ? 'accepted' : 'rejected';
-    setTimeout(() => { flash = null; }, 300);
+let limiter = $derived.by(() => {
+  switch (selected) {
+    case "token-bucket":
+      return tokenBucket;
+    case "fixed-window":
+      return fixedWindow;
+    case "sliding-window":
+      return slidingWindow;
+    case "leaky-bucket":
+      return leakyBucket;
+    default:
+      return tokenBucket;
   }
+});
 
-  function toggleAutoSend() {
-    autoSend = !autoSend;
-    if (autoSend) {
-      autoIntervalId = setInterval(sendRequest, 1000 / autoRate);
-    } else {
-      if (autoIntervalId) clearInterval(autoIntervalId);
-      autoIntervalId = null;
-    }
-  }
+let stats = $derived.by(() => {
+  const log = limiter.log;
+  const total = log.length;
+  const accepted = log.filter((e) => e.accepted).length;
+  const rejected = total - accepted;
+  const rate = total > 0 ? ((accepted / total) * 100).toFixed(1) : "0.0";
+  return { total, accepted, rejected, rate };
+});
 
-  function updateAutoRate(newRate) {
-    autoRate = newRate;
-    if (autoSend) {
-      if (autoIntervalId) clearInterval(autoIntervalId);
-      autoIntervalId = setInterval(sendRequest, 1000 / autoRate);
-    }
-  }
+function sendRequest() {
+  const result = limiter.tryRequest();
+  flash = result ? "accepted" : "rejected";
+  setTimeout(() => {
+    flash = null;
+  }, 300);
+}
 
-  function resetAll() {
-    limiter.reset();
-    autoSend = false;
+function toggleAutoSend() {
+  autoSend = !autoSend;
+  if (autoSend) {
+    autoIntervalId = setInterval(sendRequest, 1000 / autoRate);
+  } else {
     if (autoIntervalId) clearInterval(autoIntervalId);
     autoIntervalId = null;
   }
+}
 
-  function switchAlgorithm(id) {
-    autoSend = false;
+function updateAutoRate(newRate) {
+  autoRate = newRate;
+  if (autoSend) {
     if (autoIntervalId) clearInterval(autoIntervalId);
-    autoIntervalId = null;
-    selected = id;
+    autoIntervalId = setInterval(sendRequest, 1000 / autoRate);
   }
+}
 
-  onDestroy(() => {
-    tokenBucket.destroy();
-    fixedWindow.destroy();
-    slidingWindow.destroy();
-    leakyBucket.destroy();
-    if (autoIntervalId) clearInterval(autoIntervalId);
-  });
+function resetAll() {
+  limiter.reset();
+  autoSend = false;
+  if (autoIntervalId) clearInterval(autoIntervalId);
+  autoIntervalId = null;
+}
+
+function switchAlgorithm(id) {
+  autoSend = false;
+  if (autoIntervalId) clearInterval(autoIntervalId);
+  autoIntervalId = null;
+  selected = id;
+}
+
+onDestroy(() => {
+  tokenBucket.destroy();
+  fixedWindow.destroy();
+  slidingWindow.destroy();
+  leakyBucket.destroy();
+  if (autoIntervalId) clearInterval(autoIntervalId);
+});
 </script>
 
 <main>

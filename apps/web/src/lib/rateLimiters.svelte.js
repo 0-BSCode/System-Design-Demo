@@ -57,10 +57,18 @@ export function createTokenBucket(capacity = 10, refillRate = 2) {
   start();
 
   return {
-    get tokens() { return tokens; },
-    get maxTokens() { return maxTokens; },
-    get rate() { return rate; },
-    get log() { return log; },
+    get tokens() {
+      return tokens;
+    },
+    get maxTokens() {
+      return maxTokens;
+    },
+    get rate() {
+      return rate;
+    },
+    get log() {
+      return log;
+    },
     tryRequest,
     reset,
     setCapacity,
@@ -113,7 +121,9 @@ export function createFixedWindow(maxRequests = 5, windowSizeMs = 5000) {
     log = [];
   }
 
-  function setLimit(l) { limit = l; }
+  function setLimit(l) {
+    limit = l;
+  }
   function setWindowSize(w) {
     windowSize = w;
     start();
@@ -126,11 +136,21 @@ export function createFixedWindow(maxRequests = 5, windowSizeMs = 5000) {
   start();
 
   return {
-    get count() { return count; },
-    get limit() { return limit; },
-    get windowSize() { return windowSize; },
-    get windowStart() { return windowStart; },
-    get log() { return log; },
+    get count() {
+      return count;
+    },
+    get limit() {
+      return limit;
+    },
+    get windowSize() {
+      return windowSize;
+    },
+    get windowStart() {
+      return windowStart;
+    },
+    get log() {
+      return log;
+    },
     getWindowProgress,
     tryRequest,
     reset,
@@ -151,7 +171,7 @@ export function createSlidingWindowLog(maxRequests = 5, windowSizeMs = 5000) {
 
   function prune() {
     const cutoff = Date.now() - windowSize;
-    timestamps = timestamps.filter(t => t > cutoff);
+    timestamps = timestamps.filter((t) => t > cutoff);
   }
 
   function tryRequest() {
@@ -173,25 +193,39 @@ export function createSlidingWindowLog(maxRequests = 5, windowSizeMs = 5000) {
     log = [];
   }
 
-  function setLimit(l) { limit = l; }
-  function setWindowSize(w) { windowSize = w; }
+  function setLimit(l) {
+    limit = l;
+  }
+  function setWindowSize(w) {
+    windowSize = w;
+  }
 
   function getActiveCount() {
     const cutoff = Date.now() - windowSize;
-    return timestamps.filter(t => t > cutoff).length;
+    return timestamps.filter((t) => t > cutoff).length;
   }
 
   function getTimestamps() {
     const cutoff = Date.now() - windowSize;
-    return timestamps.filter(t => t > cutoff);
+    return timestamps.filter((t) => t > cutoff);
   }
 
   return {
-    get count() { return getActiveCount(); },
-    get limit() { return limit; },
-    get windowSize() { return windowSize; },
-    get log() { return log; },
-    get timestamps() { return getTimestamps(); },
+    get count() {
+      return getActiveCount();
+    },
+    get limit() {
+      return limit;
+    },
+    get windowSize() {
+      return windowSize;
+    },
+    get log() {
+      return log;
+    },
+    get timestamps() {
+      return getTimestamps();
+    },
     tryRequest,
     reset,
     setLimit,
@@ -254,10 +288,18 @@ export function createLeakyBucket(capacity = 10, drainRate = 2) {
   start();
 
   return {
-    get queue() { return queue; },
-    get maxQueue() { return maxQueue; },
-    get rate() { return rate; },
-    get log() { return log; },
+    get queue() {
+      return queue;
+    },
+    get maxQueue() {
+      return maxQueue;
+    },
+    get rate() {
+      return rate;
+    },
+    get log() {
+      return log;
+    },
     tryRequest,
     reset,
     setCapacity,

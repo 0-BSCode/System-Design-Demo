@@ -1,30 +1,34 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+import { onDestroy, onMount } from "svelte";
 
-  let { limiter } = $props();
-  let now = $state(Date.now());
-  let frameId;
+let { limiter } = $props();
+let now = $state(Date.now());
+let frameId;
 
-  function tick() {
-    now = Date.now();
-    frameId = requestAnimationFrame(tick);
-  }
+function tick() {
+  now = Date.now();
+  frameId = requestAnimationFrame(tick);
+}
 
-  onMount(() => { frameId = requestAnimationFrame(tick); });
-  onDestroy(() => { if (frameId) cancelAnimationFrame(frameId); });
+onMount(() => {
+  frameId = requestAnimationFrame(tick);
+});
+onDestroy(() => {
+  if (frameId) cancelAnimationFrame(frameId);
+});
 
-  let activeTimestamps = $derived.by(() => {
-    const cutoff = now - limiter.windowSize;
-    return limiter.timestamps.filter(t => t > cutoff);
+let activeTimestamps = $derived.by(() => {
+  const cutoff = now - limiter.windowSize;
+  return limiter.timestamps.filter((t) => t > cutoff);
+});
+
+let dots = $derived.by(() => {
+  return activeTimestamps.map((t) => {
+    const age = now - t;
+    const pct = 1 - age / limiter.windowSize;
+    return { pct: Math.max(0, Math.min(1, pct)), time: t };
   });
-
-  let dots = $derived.by(() => {
-    return activeTimestamps.map(t => {
-      const age = now - t;
-      const pct = 1 - age / limiter.windowSize;
-      return { pct: Math.max(0, Math.min(1, pct)), time: t };
-    });
-  });
+});
 </script>
 
 <div class="viz sliding-window-viz">

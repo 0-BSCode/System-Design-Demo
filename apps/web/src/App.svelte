@@ -136,10 +136,11 @@ onDestroy(() => {
     </div>
 
     <div class="controls-panel">
-      <div class="send-section">
-        <button class="send-btn" onclick={sendRequest}>
-          Send Request
-        </button>
+      <div class="controls-card">
+        <div class="send-row">
+          <button class="send-btn" onclick={sendRequest}>Send Request</button>
+          <button class="reset-btn" onclick={resetAll}>Reset</button>
+        </div>
 
         <div class="auto-send">
           <button
@@ -147,7 +148,7 @@ onDestroy(() => {
             class:active={autoSend}
             onclick={toggleAutoSend}
           >
-            {autoSend ? 'Stop Auto' : 'Auto Send'}
+            {autoSend ? 'Stop' : 'Auto'}
           </button>
           <label class="rate-control">
             <span>{autoRate} req/s</span>
@@ -161,11 +162,8 @@ onDestroy(() => {
           </label>
         </div>
 
-        <button class="reset-btn" onclick={resetAll}>Reset</button>
-      </div>
+        <div class="config-divider"></div>
 
-      <div class="config-section">
-        <h4>Configuration</h4>
         {#if selected === 'token-bucket'}
           <label>
             <span>Bucket Size: {tokenBucket.maxTokens}</span>
@@ -213,25 +211,22 @@ onDestroy(() => {
         {/if}
       </div>
 
-      <div class="stats-section">
-        <h4>Stats</h4>
-        <div class="stats-grid">
-          <div class="stat">
-            <span class="stat-value">{stats.total}</span>
-            <span class="stat-label">Total</span>
-          </div>
-          <div class="stat accepted">
-            <span class="stat-value">{stats.accepted}</span>
-            <span class="stat-label">Accepted</span>
-          </div>
-          <div class="stat rejected">
-            <span class="stat-value">{stats.rejected}</span>
-            <span class="stat-label">Rejected</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">{stats.rate}%</span>
-            <span class="stat-label">Success</span>
-          </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-value">{stats.total}</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat accepted">
+          <span class="stat-value">{stats.accepted}</span>
+          <span class="stat-label">Accepted</span>
+        </div>
+        <div class="stat rejected">
+          <span class="stat-value">{stats.rejected}</span>
+          <span class="stat-label">Rejected</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{stats.rate}%</span>
+          <span class="stat-label">Success</span>
         </div>
       </div>
 
@@ -254,11 +249,16 @@ onDestroy(() => {
 
 <style>
   :global(:root) {
-    --color-bg: #0f1117;
-    --color-surface: #1a1d2e;
-    --color-border: #2a2d3e;
-    --color-text: #e2e8f0;
-    --color-muted: #8892a8;
+    --color-bg: #000000;
+    --color-surface: #030712;
+    --color-border: #0d1b33;
+    --color-text: #ffffff;
+    --color-muted: #6b7a94;
+    --color-accent: #1a6dff;
+    --color-accent-rgb: 26, 109, 255;
+    --color-accent-cyan: #00d4ff;
+    --color-success: #00d4ff;
+    --color-danger: #ef4444;
   }
 
   :global(body) {
@@ -268,6 +268,23 @@ onDestroy(() => {
     color: var(--color-text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
+  }
+
+  /* Radial blue glow from bottom — the signature Flux ambient light */
+  :global(body::before) {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(26, 109, 255, 0.28) 0%, rgba(0, 212, 255, 0.10) 40%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 80% 90%, rgba(0, 212, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global(#app) {
+    position: relative;
+    z-index: 1;
   }
 
   :global(*) {
@@ -288,7 +305,7 @@ onDestroy(() => {
   h1 {
     font-size: 2rem;
     margin: 0 0 0.25rem 0;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #10b981);
+    background: linear-gradient(135deg, #00d4ff, #1a6dff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -330,7 +347,8 @@ onDestroy(() => {
     background: color-mix(in srgb, var(--tab-color) 15%, transparent);
     border-color: var(--tab-color);
     color: var(--tab-color);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--tab-color) 20%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--tab-color) 25%, transparent),
+                inset 0 -2px 16px rgba(0, 212, 255, 0.10);
   }
 
   .content {
@@ -348,18 +366,24 @@ onDestroy(() => {
 
   .viz-panel {
     background: var(--color-surface);
+    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.08) 100%);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.5rem;
     transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06);
+  }
+
+  .viz-panel:hover {
+    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06), 0 0 20px rgba(0, 212, 255, 0.10);
   }
 
   .viz-panel.flash-accepted {
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 0 24px rgba(0, 212, 255, 0.4);
   }
 
   .viz-panel.flash-rejected {
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.35);
   }
 
   :global(.viz h3) {
@@ -377,27 +401,34 @@ onDestroy(() => {
   .controls-panel {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-  }
-
-  .send-section {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
     gap: 0.75rem;
   }
 
-  .send-btn {
-    width: 100%;
+  .controls-card {
+    background: var(--color-surface);
+    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.08) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
     padding: 0.75rem;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06);
+  }
+
+  .send-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .send-btn {
+    flex: 1;
+    padding: 0.6rem;
+    background: linear-gradient(135deg, #1456d0, #1a6dff);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -405,7 +436,7 @@ onDestroy(() => {
 
   .send-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 24px rgba(26, 109, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.15);
   }
 
   .send-btn:active {
@@ -419,12 +450,12 @@ onDestroy(() => {
   }
 
   .auto-btn {
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.65rem;
     background: var(--color-bg);
     color: var(--color-muted);
     border: 1px solid var(--color-border);
     border-radius: 6px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -454,11 +485,11 @@ onDestroy(() => {
   }
 
   .reset-btn {
-    padding: 0.5rem;
+    padding: 0.6rem 0.75rem;
     background: transparent;
     color: var(--color-muted);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -469,34 +500,25 @@ onDestroy(() => {
     border-color: var(--color-text);
   }
 
-  .config-section, .stats-section {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1rem;
+  .config-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 0.125rem 0;
   }
 
-  .config-section h4, .stats-section h4 {
-    margin: 0 0 0.75rem 0;
-    font-size: 0.85rem;
-    color: var(--color-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .config-section label {
+  .controls-card label {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: 0.75rem;
+    gap: 3px;
+    margin-bottom: 0.4rem;
   }
 
-  .config-section label:last-child {
+  .controls-card label:last-child {
     margin-bottom: 0;
   }
 
-  .config-section label span {
-    font-size: 0.8rem;
+  .controls-card label span {
+    font-size: 0.78rem;
     color: var(--color-text);
     font-weight: 500;
   }
@@ -515,39 +537,41 @@ onDestroy(() => {
     appearance: none;
     width: 14px;
     height: 14px;
-    background: #3b82f6;
+    background: var(--color-accent);
     border-radius: 50%;
     cursor: pointer;
   }
 
-  .stats-grid {
+  .stats-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
   }
 
   .stat {
-    background: var(--color-bg);
+    background: var(--color-surface);
+    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.06) 100%);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    padding: 0.5rem;
+    padding: 0.35rem 0.25rem;
     text-align: center;
   }
 
   .stat-value {
     display: block;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 700;
   }
 
   .stat-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     color: var(--color-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .stat.accepted .stat-value { color: #22c55e; }
-  .stat.rejected .stat-value { color: #ef4444; }
+  .stat.accepted .stat-value { color: var(--color-success); }
+  .stat.rejected .stat-value { color: var(--color-danger); }
 
   footer {
     margin-top: 2rem;
@@ -555,9 +579,11 @@ onDestroy(() => {
 
   .how-it-works {
     background: var(--color-surface);
+    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.08) 100%);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.25rem;
+    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06);
   }
 
   .how-it-works h3 {
@@ -577,6 +603,6 @@ onDestroy(() => {
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.8rem;
-    color: #a78bfa;
+    color: var(--color-accent-cyan);
   }
 </style>

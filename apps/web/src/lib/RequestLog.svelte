@@ -26,17 +26,22 @@ function timeAgo(ts) {
 
 <style>
   .log-panel {
-    margin-top: 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.75rem;
   }
 
   h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    color: var(--color-text);
+    margin: 0 0 0.4rem 0;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .log-entries {
-    max-height: 200px;
+    max-height: 160px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

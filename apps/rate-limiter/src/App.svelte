@@ -104,6 +104,12 @@ onDestroy(() => {
 </script>
 
 <main>
+  <nav class="app-nav">
+    <a class="app-link current" href="/rate-limiter/">Rate Limiter</a>
+    <a class="app-link" href="/cache-invalidation/">Cache Invalidation</a>
+    <a class="app-link" href="/proxy-patterns/">Proxy Patterns</a>
+  </nav>
+
   <header>
     <h1>HTTP Rate Limiter</h1>
     <p class="subtitle">Interactive visualization of common rate limiting algorithms</p>
@@ -295,6 +301,37 @@ onDestroy(() => {
     max-width: 960px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
+  }
+
+  .app-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .app-link {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+    transition: all 0.2s ease;
+  }
+
+  .app-link:hover {
+    color: var(--color-text);
+    border-color: var(--color-accent);
+  }
+
+  .app-link.current {
+    color: var(--color-accent-cyan);
+    border-color: var(--color-accent-cyan);
+    background: rgba(0, 212, 255, 0.08);
+    pointer-events: none;
   }
 
   header {

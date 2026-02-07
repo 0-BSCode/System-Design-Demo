@@ -1,0 +1,15 @@
+:5173 {
+	redir /rate-limiter /rate-limiter/ permanent
+	handle /rate-limiter/* {
+		reverse_proxy localhost:5174
+	}
+
+	redir /cache-invalidation /cache-invalidation/ permanent
+	handle /cache-invalidation/* {
+		reverse_proxy localhost:5175
+	}
+
+	handle / {
+		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/" 200
+	}
+}

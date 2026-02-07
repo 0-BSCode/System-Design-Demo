@@ -1,1 +1,1 @@
-/* Reset - all styling is in App.svelte via :global */
+@import "@rate-limiter/ui/styles.css";

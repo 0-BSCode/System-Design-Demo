@@ -1,0 +1,11 @@
+{
+  "name": "@rate-limiter/ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "svelte": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./styles.css": "./styles.css"
+  }
+}

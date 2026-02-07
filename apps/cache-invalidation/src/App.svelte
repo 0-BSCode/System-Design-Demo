@@ -1,4 +1,5 @@
 <script>
+import { AppNav } from "@rate-limiter/ui";
 import { onDestroy } from "svelte";
 import {
   createTaggedCache,
@@ -140,18 +141,14 @@ onDestroy(() => {
 </script>
 
 <main>
-  <nav class="app-nav">
-    <a class="app-link" href="/rate-limiter/">Rate Limiter</a>
-    <a class="app-link current" href="/cache-invalidation/">Cache Invalidation</a>
-    <a class="app-link" href="/proxy-patterns/">Proxy Patterns</a>
-  </nav>
+  <AppNav current="cache-invalidation" />
 
   <header>
     <h1>Cache Invalidation</h1>
     <p class="subtitle">Interactive visualization of cache invalidation strategies</p>
   </header>
 
-  <nav class="strategy-tabs">
+  <nav class="tab-bar">
     {#each strategies as strat (strat.id)}
       <button
         class="tab"
@@ -325,166 +322,6 @@ onDestroy(() => {
 </main>
 
 <style>
-  :global(:root) {
-    --color-bg: #000000;
-    --color-surface: #030712;
-    --color-border: #0d1b33;
-    --color-text: #ffffff;
-    --color-muted: #6b7a94;
-    --color-accent: #1a6dff;
-    --color-accent-rgb: 26, 109, 255;
-    --color-accent-cyan: #00d4ff;
-    --color-success: #00d4ff;
-    --color-danger: #ef4444;
-  }
-
-  :global(body) {
-    margin: 0;
-    padding: 0;
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    min-height: 100vh;
-  }
-
-  :global(body::before) {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(26, 109, 255, 0.28) 0%, rgba(0, 212, 255, 0.10) 40%, transparent 70%),
-      radial-gradient(ellipse 40% 30% at 80% 90%, rgba(0, 212, 255, 0.08) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  :global(#app) {
-    position: relative;
-    z-index: 1;
-  }
-
-  :global(*) {
-    box-sizing: border-box;
-  }
-
-  main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-  }
-
-  .app-nav {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .app-link {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--color-muted);
-    text-decoration: none;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    background: var(--color-surface);
-    transition: all 0.2s ease;
-  }
-
-  .app-link:hover {
-    color: var(--color-text);
-    border-color: var(--color-accent);
-  }
-
-  .app-link.current {
-    color: var(--color-accent-cyan);
-    border-color: var(--color-accent-cyan);
-    background: rgba(0, 212, 255, 0.08);
-    pointer-events: none;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-    margin: 0 0 0.25rem 0;
-    background: linear-gradient(135deg, #00d4ff, #1a6dff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .subtitle {
-    color: var(--color-muted);
-    margin: 0;
-    font-size: 0.95rem;
-  }
-
-  .strategy-tabs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .tab {
-    flex: 1;
-    min-width: 100px;
-    padding: 0.65rem 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    background: var(--color-surface);
-    color: var(--color-muted);
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-  }
-
-  .tab:hover {
-    border-color: var(--tab-color);
-    color: var(--color-text);
-  }
-
-  .tab.active {
-    background: color-mix(in srgb, var(--tab-color) 15%, transparent);
-    border-color: var(--tab-color);
-    color: var(--tab-color);
-    box-shadow: 0 0 16px color-mix(in srgb, var(--tab-color) 25%, transparent),
-                inset 0 -2px 16px rgba(0, 212, 255, 0.10);
-  }
-
-  .content {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 1.5rem;
-    align-items: start;
-  }
-
-  @media (max-width: 720px) {
-    .content {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .viz-panel {
-    background: var(--color-surface);
-    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.08) 100%);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    transition: box-shadow 0.3s ease;
-    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06);
-  }
-
-  .viz-panel:hover {
-    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06), 0 0 20px rgba(0, 212, 255, 0.10);
-  }
-
   .viz-panel.flash-hit {
     box-shadow: 0 0 24px rgba(0, 212, 255, 0.4);
   }
@@ -495,36 +332,6 @@ onDestroy(() => {
 
   .viz-panel.flash-write {
     box-shadow: 0 0 24px rgba(59, 130, 246, 0.4);
-  }
-
-  :global(.viz h3) {
-    margin: 0 0 0.25rem 0;
-    font-size: 1.1rem;
-  }
-
-  :global(.viz .description) {
-    color: var(--color-muted);
-    font-size: 0.8rem;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.5;
-  }
-
-  .controls-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .controls-card {
-    background: var(--color-surface);
-    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.08) 100%);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 0.85rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06);
   }
 
   .key-cycler {
@@ -615,18 +422,8 @@ onDestroy(() => {
 
   .reset-btn {
     padding: 0.4rem 0.6rem;
-    background: transparent;
-    color: var(--color-muted);
-    border: 1px solid var(--color-border);
     border-radius: 6px;
     font-size: 0.75rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .reset-btn:hover {
-    color: var(--color-text);
-    border-color: var(--color-text);
   }
 
   .write-input input {
@@ -648,123 +445,6 @@ onDestroy(() => {
   .write-input input::placeholder {
     color: var(--color-muted);
     font-size: 0.75rem;
-  }
-
-  .auto-send {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
-  .auto-btn {
-    padding: 0.3rem 0.55rem;
-    background: var(--color-bg);
-    color: var(--color-muted);
-    border: 1px solid var(--color-border);
-    border-radius: 5px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .auto-btn.active {
-    background: rgba(239, 68, 68, 0.15);
-    border-color: #ef4444;
-    color: #ef4444;
-  }
-
-  .rate-control {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .rate-control span {
-    font-size: 0.72rem;
-    color: var(--color-muted);
-  }
-
-  .rate-control input[type="range"] {
-    width: 100%;
-  }
-
-  .config-divider {
-    height: 1px;
-    background: var(--color-border);
-    margin: 0.5rem 0;
-  }
-
-  .controls-card label {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 0.25rem;
-  }
-
-  .controls-card label:last-child {
-    margin-bottom: 0;
-  }
-
-  .controls-card label span {
-    font-size: 0.78rem;
-    color: var(--color-text);
-    font-weight: 500;
-  }
-
-  input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 6px;
-    background: var(--color-border);
-    border-radius: 3px;
-    outline: none;
-    cursor: pointer;
-    transition: background 0.15s ease;
-  }
-
-  input[type="range"]:hover {
-    background: color-mix(in srgb, var(--color-border) 80%, var(--color-accent));
-  }
-
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    background: var(--color-accent);
-    border: 2px solid color-mix(in srgb, var(--color-accent) 60%, white);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(26, 109, 255, 0.4);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-    box-shadow: 0 0 14px rgba(26, 109, 255, 0.6);
-  }
-
-  input[type="range"]::-webkit-slider-thumb:active {
-    transform: scale(1.05);
-  }
-
-  input[type="range"]::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    background: var(--color-accent);
-    border: 2px solid color-mix(in srgb, var(--color-accent) 60%, white);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(26, 109, 255, 0.4);
-  }
-
-  input[type="range"]::-moz-range-track {
-    height: 6px;
-    background: var(--color-border);
-    border-radius: 3px;
   }
 
   .crash-row {
@@ -896,68 +576,6 @@ onDestroy(() => {
     box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
   }
 
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.4rem;
-  }
-
-  .stat {
-    background: var(--color-surface);
-    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.06) 100%);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 0.35rem 0.25rem;
-    text-align: center;
-  }
-
-  .stat-value {
-    display: block;
-    font-size: 1rem;
-    font-weight: 700;
-  }
-
-  .stat-label {
-    font-size: 0.6rem;
-    color: var(--color-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
   .stat.hit-stat .stat-value { color: var(--color-success); }
   .stat.miss-stat .stat-value { color: #f59e0b; }
-
-  footer {
-    margin-top: 2rem;
-  }
-
-  .how-it-works {
-    background: var(--color-surface);
-    background-image: linear-gradient(180deg, transparent 40%, rgba(26, 109, 255, 0.08) 100%);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1.25rem;
-    box-shadow: 0 0 50px rgba(26, 109, 255, 0.06);
-  }
-
-  .how-it-works h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.95rem;
-  }
-
-  .how-it-works p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--color-muted);
-    line-height: 1.6;
-  }
-
-  .how-it-works code {
-    background: var(--color-bg);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    color: var(--color-accent-cyan);
-  }
-
 </style>

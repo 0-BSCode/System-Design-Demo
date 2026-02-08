@@ -14,7 +14,12 @@
 		reverse_proxy localhost:5176
 	}
 
+	redir /queue-workers /queue-workers/ permanent
+	handle /queue-workers/* {
+		reverse_proxy localhost:5177
+	}
+
 	handle / {
-		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/ or /proxy-patterns/" 200
+		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/ or /proxy-patterns/ or /queue-workers/" 200
 	}
 }

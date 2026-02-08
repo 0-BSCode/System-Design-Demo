@@ -5,6 +5,7 @@ const apps = [
   { id: "rate-limiter", label: "Rate Limiter", href: "/rate-limiter/" },
   { id: "cache-invalidation", label: "Cache Invalidation", href: "/cache-invalidation/" },
   { id: "proxy-patterns", label: "Proxy Patterns", href: "/proxy-patterns/" },
+  { id: "queue-workers", label: "Queue Workers", href: "/queue-workers/" },
 ];
 </script>
 

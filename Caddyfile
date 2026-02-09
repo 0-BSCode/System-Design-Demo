@@ -19,7 +19,12 @@
 		reverse_proxy localhost:5177
 	}
 
+	redir /offline-first /offline-first/ permanent
+	handle /offline-first/* {
+		reverse_proxy localhost:5178
+	}
+
 	handle / {
-		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/ or /proxy-patterns/ or /queue-workers/" 200
+		respond "System Design Labs — visit /rate-limiter/ or /cache-invalidation/ or /proxy-patterns/ or /queue-workers/ or /offline-first/" 200
 	}
 }

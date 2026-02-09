@@ -6,6 +6,7 @@ const apps = [
   { id: "cache-invalidation", label: "Cache Invalidation", href: "/cache-invalidation/" },
   { id: "proxy-patterns", label: "Proxy Patterns", href: "/proxy-patterns/" },
   { id: "queue-workers", label: "Queue Workers", href: "/queue-workers/" },
+  { id: "offline-first", label: "Offline First", href: "/offline-first/" },
 ];
 </script>
 

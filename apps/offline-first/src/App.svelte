@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@rate-limiter/ui";
+import { AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import CacheStrategyViz from "./lib/CacheStrategyViz.svelte";
 import ConflictViz from "./lib/ConflictViz.svelte";

@@ -1,5 +1,5 @@
 {
-  "name": "@rate-limiter/cache-invalidation",
+  "name": "@system-design-monorepo/cache-invalidation",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@rate-limiter/ui": "workspace:*",
+    "@system-design-monorepo/ui": "workspace:*",
     "@sveltejs/vite-plugin-svelte": "^6.2.1",
     "svelte": "^5.43.8",
     "vite": "^7.2.4"

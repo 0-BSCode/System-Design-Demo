@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@rate-limiter/ui";
+import { AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import FixedWindowViz from "./lib/FixedWindowViz.svelte";
 import LeakyBucketViz from "./lib/LeakyBucketViz.svelte";

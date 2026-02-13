@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@rate-limiter/ui";
+import { AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import EventLog from "./lib/EventLog.svelte";
 import JobQueueViz from "./lib/JobQueueViz.svelte";

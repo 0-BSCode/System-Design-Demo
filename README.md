@@ -48,10 +48,10 @@ This starts every app in parallel via Turborepo. Each app runs on its own port (
 ### Run a single app
 
 ```sh
-pnpm --filter @rate-limiter/rate-limiter dev
+pnpm --filter @system-design-monorepo/rate-limiter dev
 ```
 
-Replace `@rate-limiter/rate-limiter` with the app's package name (e.g. `@rate-limiter/cache-invalidation`).
+Replace `@system-design-monorepo/rate-limiter` with the app's package name (e.g. `@system-design-monorepo/cache-invalidation`).
 
 ### Unified gateway (optional)
 
@@ -81,18 +81,18 @@ Each app can be deployed as its own Cloudflare Pages project. Since these are st
 
 | Setting | Value |
 | --- | --- |
-| **Build command** | `pnpm install && pnpm --filter @rate-limiter/<app-name> build` |
+| **Build command** | `pnpm install && pnpm --filter @system-design-monorepo/<app-name> build` |
 | **Build output directory** | `apps/<app-name>/dist` |
 | **Root directory** | `/` |
 
 3. Add the environment variable `NODE_VERSION` set to `18` (or higher).
-4. If the app is served at the root of its domain (not under a subpath), add `VITE_BASE=/` as an environment variable and update the build command to: `pnpm install && pnpm --filter @rate-limiter/<app-name> build -- --base=/`
+4. If the app is served at the root of its domain (not under a subpath), add `VITE_BASE=/` as an environment variable and update the build command to: `pnpm install && pnpm --filter @system-design-monorepo/<app-name> build -- --base=/`
 
 ### Via Wrangler CLI
 
 ```sh
 # Build the app
-pnpm --filter @rate-limiter/rate-limiter build -- --base=/
+pnpm --filter @system-design-monorepo/rate-limiter build -- --base=/
 
 # Deploy
 npx wrangler pages deploy apps/rate-limiter/dist --project-name=rate-limiter

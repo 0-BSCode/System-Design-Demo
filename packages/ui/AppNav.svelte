@@ -10,6 +10,7 @@ const apps = [
 ];
 </script>
 
+{#if import.meta.env.DEV}
 <nav class="app-nav">
   {#each apps as app (app.id)}
     <a
@@ -21,6 +22,7 @@ const apps = [
     </a>
   {/each}
 </nav>
+{/if}
 
 <style>
   .app-nav {

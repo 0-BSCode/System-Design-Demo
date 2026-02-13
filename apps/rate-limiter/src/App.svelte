@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@system-design-monorepo/ui";
+import { AppFooter, AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import FixedWindowViz from "./lib/FixedWindowViz.svelte";
 import LeakyBucketViz from "./lib/LeakyBucketViz.svelte";
@@ -248,6 +248,8 @@ onDestroy(() => {
       </p>
     </div>
   </footer>
+
+  <AppFooter />
 </main>
 
 <style>

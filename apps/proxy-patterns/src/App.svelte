@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@system-design-monorepo/ui";
+import { AppFooter, AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import ApiGatewayViz from "./lib/ApiGatewayViz.svelte";
 import LoadBalancerViz from "./lib/LoadBalancerViz.svelte";
@@ -294,6 +294,8 @@ onDestroy(() => {
       </p>
     </div>
   </footer>
+
+  <AppFooter />
 </main>
 
 <style>

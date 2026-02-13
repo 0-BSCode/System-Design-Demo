@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@system-design-monorepo/ui";
+import { AppFooter, AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import {
   createTaggedCache,
@@ -319,6 +319,8 @@ onDestroy(() => {
       </p>
     </div>
   </footer>
+
+  <AppFooter />
 </main>
 
 <style>

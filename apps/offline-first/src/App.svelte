@@ -1,5 +1,5 @@
 <script>
-import { AppNav } from "@system-design-monorepo/ui";
+import { AppFooter, AppNav } from "@system-design-monorepo/ui";
 import { onDestroy } from "svelte";
 import CacheStrategyViz from "./lib/CacheStrategyViz.svelte";
 import ConflictViz from "./lib/ConflictViz.svelte";
@@ -259,6 +259,8 @@ onDestroy(() => {
       {/if}
     </div>
   </footer>
+
+  <AppFooter />
 </main>
 
 <style>
